@@ -2,10 +2,9 @@ import { useLayoutEffect, useRef, useCallback, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
   User,
-  Briefcase,
   Bookmark,
   FlaskConical,
-  Backpack,
+  PenLine,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
@@ -17,10 +16,9 @@ interface DockTab {
 
 const TABS: DockTab[] = [
   { name: "Moi", icon: User, path: "/" },
-  { name: "Parcours", icon: Briefcase, path: "/experience" },
+  { name: "Blog", icon: PenLine, path: "/blog" },
   { name: "Laboratoire", icon: FlaskConical, path: "/laboratoire" },
   { name: "Bookmarks", icon: Bookmark, path: "/bookmarks" },
-  { name: "Bag", icon: Backpack, path: "/bag" },
 ];
 
 const DockNavigation = () => {

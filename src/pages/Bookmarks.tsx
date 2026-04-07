@@ -1,6 +1,109 @@
-import { useState } from "react";
+import { useState, useRef, useLayoutEffect, useEffect, useCallback } from "react";
 import { ExternalLink } from "lucide-react";
 import { useSEO } from "../hooks/useSEO";
+
+/**
+ * Builds a wobbly, hand-drawn-looking closed curve around a rectangle.
+ * We walk along an ellipse and add random jitter to each point.
+ */
+function buildHandDrawnPath(w: number, h: number): string {
+  const cx = w / 2;
+  const cy = h / 2;
+  const rx = w / 2 - 3;
+  const ry = h / 2 - 3;
+  const steps = 28;
+  // Deterministic "random" based on size so it's stable per pill
+  const seed = (w * 7 + h * 13) % 100;
+  const jitter = (i: number, scale: number) => {
+    const v = Math.sin(seed + i * 73.7) * 43758.5453;
+    return ((v - Math.floor(v)) - 0.5) * scale;
+  };
+
+  const points: [number, number][] = [];
+  for (let i = 0; i <= steps; i++) {
+    const angle = (i / steps) * Math.PI * 2 - Math.PI / 2;
+    const x = cx + Math.cos(angle) * rx + jitter(i, 1.5);
+    const y = cy + Math.sin(angle) * ry + jitter(i + 50, 1.2);
+    points.push([x, y]);
+  }
+
+  // Close back to first point with slight overshoot
+  const first = points[0];
+  points.push([first[0] + jitter(999, 1), first[1] + jitter(998, 0.8)]);
+
+  let d = `M ${points[0][0].toFixed(1)} ${points[0][1].toFixed(1)}`;
+
+  // Catmull-Rom → cubic bezier for smooth hand-drawn curves
+  for (let i = 0; i < points.length - 1; i++) {
+    const p0 = points[Math.max(i - 1, 0)];
+    const p1 = points[i];
+    const p2 = points[Math.min(i + 1, points.length - 1)];
+    const p3 = points[Math.min(i + 2, points.length - 1)];
+
+    const tension = 0.3;
+    const cp1x = p1[0] + (p2[0] - p0[0]) * tension;
+    const cp1y = p1[1] + (p2[1] - p0[1]) * tension;
+    const cp2x = p2[0] - (p3[0] - p1[0]) * tension;
+    const cp2y = p2[1] - (p3[1] - p1[1]) * tension;
+
+    d += ` C ${cp1x.toFixed(1)} ${cp1y.toFixed(1)}, ${cp2x.toFixed(1)} ${cp2y.toFixed(1)}, ${p2[0].toFixed(1)} ${p2[1].toFixed(1)}`;
+  }
+
+  return d;
+}
+
+const HandCircle = ({ width, height }: { width: number; height: number }) => {
+  const pad = 8;
+  const w = width + pad * 2;
+  const h = height + pad * 2;
+  const pathRef = useRef<SVGPathElement>(null);
+  const [len, setLen] = useState(0);
+
+  const d = buildHandDrawnPath(w, h);
+
+  useEffect(() => {
+    if (pathRef.current) {
+      const totalLen = pathRef.current.getTotalLength();
+      setLen(totalLen);
+    }
+  }, [d]);
+
+  return (
+    <svg
+      className="bk-hand-circle"
+      width={w}
+      height={h}
+      viewBox={`0 0 ${w} ${h}`}
+      fill="none"
+      aria-hidden="true"
+      style={{
+        position: "absolute",
+        top: -pad,
+        left: -pad,
+        pointerEvents: "none",
+      }}
+    >
+      <path
+        ref={pathRef}
+        d={d}
+        stroke="var(--p-text)"
+        strokeWidth="1.6"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        fill="none"
+        style={
+          len > 0
+            ? {
+                strokeDasharray: len,
+                strokeDashoffset: len,
+                animation: `bk-draw-circle 0.5s cubic-bezier(0.25, 0.1, 0.25, 1) forwards`,
+              }
+            : { opacity: 0 }
+        }
+      />
+    </svg>
+  );
+};
 
 interface BookmarkItem {
   title: string;
@@ -1091,6 +1194,44 @@ const CATEGORY_COLORS: Record<string, string> = {
   "X · À suivre": "indigo",
 };
 
+const FilterPill = ({
+  tag,
+  isActive,
+  onToggle,
+}: {
+  tag: string;
+  isActive: boolean;
+  onToggle: () => void;
+}) => {
+  const btnRef = useRef<HTMLButtonElement>(null);
+  const [size, setSize] = useState({ w: 0, h: 0 });
+
+  useLayoutEffect(() => {
+    if (btnRef.current && isActive) {
+      setSize({
+        w: btnRef.current.offsetWidth,
+        h: btnRef.current.offsetHeight,
+      });
+    }
+  }, [isActive]);
+
+  return (
+    <span className="bk-pill-wrapper">
+      <button
+        ref={btnRef}
+        className={`bk-pill${isActive ? " active" : ""}`}
+        onClick={onToggle}
+        aria-pressed={isActive}
+      >
+        {tag}
+      </button>
+      {isActive && size.w > 0 && (
+        <HandCircle width={size.w} height={size.h} />
+      )}
+    </span>
+  );
+};
+
 const Bookmarks = () => {
   useSEO({
     title: "Bookmarks — Chloé Halloin",
@@ -1124,14 +1265,12 @@ const Bookmarks = () => {
 
         <div className="bk-filters" role="group" aria-label="Filtrer par tag">
           {ALL_TAGS.map((tag) => (
-            <button
+            <FilterPill
               key={tag}
-              className={`bk-pill${activeTags.includes(tag) ? " active" : ""}`}
-              onClick={() => toggleTag(tag)}
-              aria-pressed={activeTags.includes(tag)}
-            >
-              {tag}
-            </button>
+              tag={tag}
+              isActive={activeTags.includes(tag)}
+              onToggle={() => toggleTag(tag)}
+            />
           ))}
           {activeTags.length > 0 && (
             <button

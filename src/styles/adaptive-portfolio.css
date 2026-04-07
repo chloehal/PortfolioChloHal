@@ -30,7 +30,7 @@
 
 .portfolio-container {
   min-height: 100vh;
-  max-width: 680px;
+  max-width: 960px;
   margin: 0 auto;
   padding: 0 1.5rem 4rem;
 }
@@ -89,6 +89,12 @@
   50% {
     opacity: 0.5;
   }
+}
+
+.nav-status {
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: var(--p-text-muted);
 }
 
 .nav-actions {
@@ -2008,6 +2014,8 @@ body:not(.default) .checkbox-group input[type="checkbox"] {
 
 .bookmarks-section {
   padding: 2rem 0;
+  max-width: 680px;
+  margin: 0 auto;
 }
 
 /* ── Filter pills ── */
@@ -2017,6 +2025,11 @@ body:not(.default) .checkbox-group input[type="checkbox"] {
   flex-wrap: wrap;
   gap: 0.35rem;
   margin-bottom: 2.5rem;
+}
+
+.bk-pill-wrapper {
+  position: relative;
+  display: inline-flex;
 }
 
 .bk-pill {
@@ -2037,9 +2050,27 @@ body:not(.default) .checkbox-group input[type="checkbox"] {
 }
 
 .bk-pill.active {
-  background: var(--p-text);
-  color: var(--p-bg);
-  border-color: var(--p-text);
+  background: transparent;
+  color: var(--p-text);
+  border-color: transparent;
+}
+
+/* Hand-drawn circle animation */
+.bk-hand-circle {
+  overflow: visible;
+}
+
+@keyframes bk-draw-circle {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bk-hand-circle path {
+    animation: none !important;
+    stroke-dashoffset: 0 !important;
+  }
 }
 
 .bk-pill-clear {
@@ -2188,8 +2219,264 @@ body:not(.default) .checkbox-group input[type="checkbox"] {
    WHAT'S IN MY BAG PAGE
    ============================================ */
 
-.bag-section {
+/* ============================================
+   BLOG PAGE
+   ============================================ */
+
+.blog-section {
   padding: 2rem 0;
+  max-width: 680px;
+  margin: 0 auto;
+}
+
+.blog-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--p-text-muted);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.25rem 0;
+  margin-bottom: 1.5rem;
+  transition: color 0.15s ease;
+}
+
+.blog-back:hover {
+  color: var(--p-text);
+}
+
+.blog-post-list {
+  list-style: none;
+  padding: 0;
+  margin: 1.5rem 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.blog-post-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: none;
+  border-bottom: 1px solid var(--p-border);
+  padding: 1.25rem 0;
+  cursor: pointer;
+  transition: opacity 0.15s ease;
+}
+
+.blog-post-card:hover {
+  opacity: 0.7;
+}
+
+.blog-post-date,
+.blog-article-date {
+  font-size: 0.7rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--p-text-muted);
+}
+
+.blog-post-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--p-text);
+  margin: 0;
+}
+
+.blog-post-excerpt {
+  font-size: 0.8rem;
+  color: var(--p-text-muted);
+  margin: 0;
+}
+
+.blog-article-header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-bottom: 2rem;
+}
+
+.blog-article-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--p-text);
+  margin: 0;
+}
+
+.blog-article-intro {
+  font-size: 0.9rem;
+  color: var(--p-text-muted);
+  font-style: italic;
+  margin-bottom: 1.5rem;
+}
+
+.blog-article-body p {
+  font-size: 0.9rem;
+  line-height: 1.7;
+  color: var(--p-text);
+  margin: 0 0 1rem;
+}
+
+.blog-article-body h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--p-text);
+  margin: 2rem 0 0.75rem;
+}
+
+.blog-separator {
+  border: none;
+  border-top: 1px solid var(--p-border);
+  margin: 1.5rem 0;
+}
+
+/* ============================================
+   TYPO REVEAL — clip-path font swap on hover
+   ============================================ */
+
+.typo-reveal {
+  position: relative;
+}
+
+.typo-reveal__svg {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+.typo-reveal__base {
+  position: relative;
+  z-index: 1;
+}
+
+.typo-reveal__clone {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background: var(--p-bg);
+}
+
+/*
+ * Font swap strategy:
+ * Each theme defines --typo-reveal-font and --typo-reveal-adjust
+ * so the alternate typography always contrasts with the theme's body font.
+ * font-size-adjust normalizes x-height so text occupies the same space.
+ */
+
+:root {
+  --typo-reveal-font: "JetBrains Mono", "Fira Code", monospace;
+  --typo-reveal-adjust: 0.505;
+}
+
+.dark {
+  --typo-reveal-font: "Playfair Display", "Georgia", serif;
+  --typo-reveal-adjust: 0.52;
+}
+
+/* Sector-specific overrides — always contrast with --font-body */
+body.florist     { --typo-reveal-font: "JetBrains Mono", monospace; --typo-reveal-adjust: 0.49; }
+body.wine        { --typo-reveal-font: "Cormorant", serif;          --typo-reveal-adjust: 0.46; }
+body.boxing      { --typo-reveal-font: "Zilla Slab", serif;         --typo-reveal-adjust: 0.50; }
+body.realestate  { --typo-reveal-font: "Cormorant", serif;          --typo-reveal-adjust: 0.46; }
+body.media       { --typo-reveal-font: "Cormorant", serif;          --typo-reveal-adjust: 0.46; }
+body.webagency   { --typo-reveal-font: "JetBrains Mono", monospace; --typo-reveal-adjust: 0.49; }
+body.singer      { --typo-reveal-font: "Playfair Display", serif;   --typo-reveal-adjust: 0.52; }
+body.production  { --typo-reveal-font: "Cormorant", serif;          --typo-reveal-adjust: 0.46; }
+body.plushies    { --typo-reveal-font: "JetBrains Mono", monospace; --typo-reveal-adjust: 0.49; }
+body.jewelry     { --typo-reveal-font: "JetBrains Mono", monospace; --typo-reveal-adjust: 0.49; }
+body.leisure     { --typo-reveal-font: "Playfair Display", serif;   --typo-reveal-adjust: 0.52; }
+
+/* Dark sector overrides where needed */
+html.dark body.florist     { --typo-reveal-font: "Playfair Display", serif;   --typo-reveal-adjust: 0.52; }
+html.dark body.wine        { --typo-reveal-font: "Playfair Display", serif;   --typo-reveal-adjust: 0.52; }
+html.dark body.boxing      { --typo-reveal-font: "Cormorant", serif;          --typo-reveal-adjust: 0.46; }
+html.dark body.realestate  { --typo-reveal-font: "Playfair Display", serif;   --typo-reveal-adjust: 0.52; }
+html.dark body.media       { --typo-reveal-font: "Playfair Display", serif;   --typo-reveal-adjust: 0.52; }
+html.dark body.webagency   { --typo-reveal-font: "Playfair Display", serif;   --typo-reveal-adjust: 0.52; }
+html.dark body.singer      { --typo-reveal-font: "JetBrains Mono", monospace; --typo-reveal-adjust: 0.49; }
+html.dark body.production  { --typo-reveal-font: "Playfair Display", serif;   --typo-reveal-adjust: 0.52; }
+html.dark body.plushies    { --typo-reveal-font: "Playfair Display", serif;   --typo-reveal-adjust: 0.52; }
+html.dark body.jewelry     { --typo-reveal-font: "Cormorant", serif;          --typo-reveal-adjust: 0.46; }
+html.dark body.leisure     { --typo-reveal-font: "JetBrains Mono", monospace; --typo-reveal-adjust: 0.49; }
+
+.typo-reveal__clone {
+  font-family: var(--typo-reveal-font);
+  font-size-adjust: var(--typo-reveal-adjust);
+}
+
+/* Inherit font-family down to all children */
+.typo-reveal__clone * {
+  font-family: inherit !important;
+}
+
+/* Keep monospace elements as-is (dates, periods) */
+.typo-reveal__clone .blog-post-date,
+.typo-reveal__clone .blog-article-date,
+.typo-reveal__clone .bag-category-title {
+  font-family: "JetBrains Mono", monospace !important;
+}
+
+/* ---- Lens edge distortion ---- */
+
+.typo-reveal__edge {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  background: var(--p-bg);
+  font-family: var(--typo-reveal-font);
+  font-size-adjust: var(--typo-reveal-adjust);
+  filter: url(#typo-lens-distort);
+  transition: opacity 0.2s ease;
+  /*
+   * Mask: only show the ring band between inner radius and outer radius.
+   * The radial-gradient is positioned via CSS custom properties --ring-cx/--ring-cy
+   * set inline by JS on each frame.
+   */
+  -webkit-mask-image: radial-gradient(
+    circle 100px at var(--ring-cx, -999px) var(--ring-cy, -999px),
+    transparent 70%,
+    rgba(0,0,0,0.15) 82%,
+    rgba(0,0,0,0.5) 90%,
+    black 100%
+  );
+  mask-image: radial-gradient(
+    circle 100px at var(--ring-cx, -999px) var(--ring-cy, -999px),
+    transparent 70%,
+    rgba(0,0,0,0.15) 82%,
+    rgba(0,0,0,0.5) 90%,
+    black 100%
+  );
+}
+
+.typo-reveal__edge * {
+  font-family: inherit !important;
+}
+
+/* Disable on mobile */
+@media (max-width: 640px) {
+  .typo-reveal__clone,
+  .typo-reveal__edge {
+    display: none;
+  }
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .typo-reveal__clone,
+  .typo-reveal__edge {
+    display: none;
+  }
 }
 
 .bag-grid {
@@ -2258,6 +2545,8 @@ body:not(.default) .checkbox-group input[type="checkbox"] {
 
 .lab-section {
   padding: 2rem 0;
+  max-width: 680px;
+  margin: 0 auto;
 }
 
 /* ═══════════════════════════════════════

@@ -8,7 +8,7 @@ import Moi from "./pages/Moi";
 import Experience from "./pages/Experience";
 import Bookmarks from "./pages/Bookmarks";
 import Laboratoire from "./pages/Laboratoire";
-import Bag from "./pages/Bag";
+import Blog from "./pages/Blog";
 
 import NotFound from "./pages/NotFound";
 
@@ -26,7 +26,7 @@ const App = () => (
             <Route path="/experience" element={<Experience />} />
             <Route path="/bookmarks" element={<Bookmarks />} />
             <Route path="/laboratoire" element={<Laboratoire />} />
-            <Route path="/bag" element={<Bag />} />
+            <Route path="/blog" element={<Blog />} />
           </Route>
 
           <Route path="*" element={<NotFound />} />

@@ -1,23 +1,24 @@
 import { useState, useEffect } from "react";
 import { Outlet } from "react-router-dom";
-import SectorNavigation from "./SectorNavigation";
-import DarkModeToggle from "./DarkModeToggle";
 import DockNavigation from "./DockNavigation";
 import ReadMeButton from "./ReadMeButton";
+import { SectorContext } from "../contexts/SectorContext";
 import "../styles/adaptive-portfolio.css";
 
 const Layout = () => {
   const [currentSector, setCurrentSector] = useState("default");
 
-  useEffect(() => {
-    document.body.className = currentSector;
-  }, [currentSector]);
+  // DRAFT: sector theme switching — uncomment to re-enable
+  // useEffect(() => {
+  //   document.body.className = currentSector;
+  // }, [currentSector]);
 
   const handleSectorChange = (sector: string) => {
     setCurrentSector(sector);
   };
 
   return (
+    <SectorContext.Provider value={{ currentSector, onSectorChange: handleSectorChange }}>
     <div className="portfolio-container">
       <a href="#main-content" className="skip-to-content">
         Aller au contenu principal
@@ -29,14 +30,7 @@ const Layout = () => {
           <div className="nav-logo">
             <span className="fixed-name">Chloé Halloin</span>
             <span className="status-dot" aria-hidden="true" />
-            <h2>Open to work</h2>
-          </div>
-          <div className="nav-actions">
-            <SectorNavigation
-              onSectorChange={handleSectorChange}
-              currentSector={currentSector}
-            />
-            <DarkModeToggle />
+            <span className="nav-status">Open to work</span>
           </div>
         </div>
         <DockNavigation />
@@ -72,6 +66,7 @@ const Layout = () => {
         </div>
       </footer>
     </div>
+    </SectorContext.Provider>
   );
 };
 
