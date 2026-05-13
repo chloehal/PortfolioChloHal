@@ -61,7 +61,7 @@ export const defaultData: PortfolioData = {
       },
       {
         label: "Email ↗",
-        url: "mailto:halloinchloe@gmail.com",
+        url: "mailto:hey@chlohal.com",
       },
       {
         label: "X ↗",
@@ -74,6 +74,14 @@ export const defaultData: PortfolioData = {
     ],
   },
   experiences: [
+    {
+      id: "exp-0",
+      period: "Mai 2026 — présent",
+      title: "Design Engineer Indépendante",
+      company: "Enobase",
+      description:
+        "Conception UX/UI et design engineering en indépendante pour le générateur d'ERP Enobase.",
+    },
     {
       id: "exp-1",
       period: "Janvier 2026 — Avril 2026",

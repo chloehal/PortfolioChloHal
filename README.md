@@ -32,17 +32,18 @@ En mode par defaut, le site reste volontairement brut et minimal — un rendu ma
 
 ## Pages
 
-- **Moi** (`/`) — hero, competences, qualites et outils interactifs
+- **Moi** (`/`) — layout editorial avec fond topographique anime (lignes de contour en mauve, marching squares). Hero, competences, qualites, outils interactifs et grille bento de widgets.
 - **Experience** (`/experience`) — parcours professionnel detaille
 - **Bookmarks** (`/bookmarks`) — liens favoris organises par categorie (IA, Design, Inspiration, UX, Dev, Chrome Extensions, X) avec filtrage par tags
 - **Laboratoire** (`/laboratoire`) — experiences interactives presentees dans une grille d'icones style Finder avec Quick Look au hover et code source copiable (Variable Font Animator, Dynamic Island, Theme Transition, Chat Split-Flap, Morph Checkbox, Scrubber Input, Hold to Delete, Daily UI #001 Sign Up, Daily UI #002 Checkout)
-- **Bag** (`/bag`) — objets du quotidien
+- **Blog** (`/blog`)
 
 ## Fonctionnalites
 
 - **Theming sectoriel dynamique** — changement de palette, typos et ambiance via le dropdown dans la nav
 - **Dark mode** — toggle clair/sombre avec crossfade anime et persistence localStorage
-
+- **Fond topographique** — canvas anime en temps reel (marching squares, ~30 fps) avec lignes de contour et caracteres positionnels
+- **Bento grid** — grille de widgets responsive : photo, carte, heure, statut, hero, liens, competences, qualites, experience, formation, dark mode, theme sectoriel
 - **Outils interactifs** — generateur de nom ninja, generateur de mot de passe, egg timer, book picker, jauge a cafe
 - **Bookmarks** — 150+ liens classes par categorie avec filtrage par tags
 - **Laboratoire** — 9 experiences interactives avec Quick Look au hover, navigation par dossier et code source copiable
@@ -66,23 +67,43 @@ En mode par defaut, le site reste volontairement brut et minimal — un rendu ma
 ```
 src/
   components/
-    SectorNavigation.tsx   — dropdown de selection de secteur
-    DarkModeToggle.tsx     — toggle clair/sombre avec crossfade
-    DockNavigation.tsx     — navigation dock en bas (mobile)
-    InteractiveTools.tsx   — outils bonus (ninja, password, timer, book, coffee)
-    CodePreview.tsx        — carte apercu + code pour le labo
-    Layout.tsx             — layout avec Outlet pour le routing
+    TopographicBackground.tsx  — canvas anime marching squares
+    SectorNavigation.tsx       — dropdown de selection de secteur
+    DarkModeToggle.tsx         — toggle clair/sombre avec crossfade
+    DockNavigation.tsx         — navigation dock en bas (mobile)
+    InteractiveTools.tsx       — outils bonus (ninja, password, timer, book, coffee)
+    CodePreview.tsx            — carte apercu + code pour le labo
+    Layout.tsx                 — layout avec Outlet pour le routing
+    bento/
+      BentoGrid.tsx            — grille responsive de widgets
+      BentoWidget.tsx          — conteneur generique de widget
+      widgets/
+        HeroWidget.tsx
+        PhotoWidget.tsx
+        MapWidget.tsx
+        TimeWidget.tsx
+        StatusWidget.tsx
+        SkillsWidget.tsx
+        QualitiesWidget.tsx
+        ExperienceWidget.tsx
+        EducationWidget.tsx
+        LinksWidget.tsx
+        DarkModeWidget.tsx
+        SectorThemeWidget.tsx
+        SectorsWidget.tsx
   pages/
-    Moi.tsx                — page principale (hero, skills, formation)
-    Experience.tsx         — parcours professionnel
-    Bookmarks.tsx          — liens favoris avec filtrage par tags
-    Laboratoire.tsx        — experiences d'animation interactives
-    Bag.tsx                — objets du quotidien
-data/
-    portfolio.ts           — types + donnees par defaut
-    usePortfolioData.ts    — hook avec localStorage + JSON export
+    Moi.tsx                    — page principale (hero, bento, fond topo)
+    Experience.tsx             — parcours professionnel
+    Bookmarks.tsx              — liens favoris avec filtrage par tags
+    Laboratoire.tsx            — experiences d'animation interactives
+    Blog.tsx
+  data/
+    portfolio.ts               — types + donnees par defaut
+    usePortfolioData.ts        — hook avec localStorage + JSON export
   styles/
-    adaptive-portfolio.css — tout le CSS (palettes, themes, layout, animations)
+    adaptive-portfolio.css     — palettes sectorielles, themes, animations
+    bento-grid.css             — layout et styles de la grille bento
+    moi.css                    — layout editorial de la page Moi
 ```
 
 ## Lancer en local

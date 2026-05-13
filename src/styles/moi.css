@@ -1,0 +1,336 @@
+/* ============================================
+   PAGE MOI — Layout éditorial
+   ============================================ */
+
+/* ---- Hero ---- */
+
+.moi-hero {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: start;
+  gap: 2rem;
+  padding: 4rem 0 2.5rem;
+}
+
+.moi-hero__photo {
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid var(--p-border);
+  display: block;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.moi-hero__photo--loaded {
+  opacity: 1;
+}
+
+.moi-hero__photo-fallback {
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+  border: 1px solid var(--p-border);
+  background: var(--p-code-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--p-text-muted);
+  flex-shrink: 0;
+}
+
+.moi-hero__name {
+  font-size: clamp(2rem, 5vw, 2.75rem);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  color: var(--p-text);
+  margin: 0 0 0.4rem;
+}
+
+.moi-hero__role {
+  font-family: "JetBrains Mono", "Fira Code", monospace;
+  font-size: 0.85rem;
+  font-weight: 400;
+  color: var(--p-text-muted);
+  margin: 0 0 0.25rem;
+}
+
+.moi-hero__location {
+  font-size: 0.8rem;
+  color: var(--p-text-muted);
+  margin: 0;
+}
+
+.moi-hero__divider {
+  border: none;
+  border-top: 1px solid var(--p-border);
+  margin: 1.25rem 0;
+}
+
+.moi-hero__links {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.25rem 1.25rem;
+}
+
+.moi-hero__link {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--p-text);
+  text-decoration: none;
+  border-bottom: 1px solid var(--p-border);
+  padding-bottom: 1px;
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+
+.moi-hero__link:hover {
+  border-color: var(--p-text);
+}
+
+/* ---- Section ---- */
+
+.moi-section {
+  padding: 2.5rem 0;
+}
+
+.moi-section__header {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+  margin-bottom: 2rem;
+}
+
+.moi-section__num {
+  font-family: "JetBrains Mono", "Fira Code", monospace;
+  font-size: 0.72rem;
+  color: var(--p-text-muted);
+  flex-shrink: 0;
+}
+
+.moi-section__title {
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--p-text);
+  margin: 0;
+}
+
+/* ---- Timeline (expérience & formation) ---- */
+
+.moi-timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  border-left: 1px solid var(--p-border);
+  margin-left: 3.5rem;
+  padding-left: 1.75rem;
+  position: relative;
+}
+
+.moi-timeline-item {
+  position: relative;
+  padding-bottom: 2rem;
+}
+
+.moi-timeline-item:last-child {
+  padding-bottom: 0;
+}
+
+.moi-timeline-item::before {
+  content: "";
+  position: absolute;
+  left: calc(-1.75rem - 3px);
+  top: 7px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--p-border);
+  transition: background 0.15s ease;
+}
+
+.moi-timeline-item:hover::before {
+  background: var(--p-text-muted);
+}
+
+.moi-timeline-item__period {
+  font-family: "JetBrains Mono", "Fira Code", monospace;
+  font-size: 0.72rem;
+  color: var(--p-text-muted);
+  margin: 0 0 0.2rem;
+  position: absolute;
+  left: calc(-1.75rem - 3.5rem - 0.25rem);
+  top: 5px;
+  width: 3.5rem;
+  text-align: right;
+  line-height: 1.3;
+}
+
+.moi-timeline-item__title {
+  font-size: 0.925rem;
+  font-weight: 600;
+  color: var(--p-text);
+  margin: 0 0 0.1rem;
+}
+
+.moi-timeline-item__company {
+  font-size: 0.825rem;
+  color: var(--p-text-muted);
+  margin: 0 0 0.4rem;
+}
+
+.moi-timeline-item__desc {
+  font-size: 0.825rem;
+  line-height: 1.6;
+  color: var(--p-text-muted);
+  margin: 0;
+  text-wrap: pretty;
+}
+
+/* ---- Skills grid ---- */
+
+.moi-skills {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1px;
+  border: 1px solid var(--p-border);
+}
+
+.moi-skills__cell {
+  padding: 1.25rem 1.5rem;
+  border: none;
+}
+
+.moi-skills__cell:nth-child(1),
+.moi-skills__cell:nth-child(2) {
+  border-bottom: 1px solid var(--p-border);
+}
+
+.moi-skills__cell:nth-child(odd) {
+  border-right: 1px solid var(--p-border);
+}
+
+.moi-skills__category {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--p-text);
+  margin: 0 0 0.75rem;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.moi-skills__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+}
+
+.moi-skills__tag {
+  font-family: "JetBrains Mono", "Fira Code", monospace;
+  font-size: 0.72rem;
+  padding: 0.15rem 0.5rem;
+  background: var(--p-code-bg);
+  color: var(--p-text-muted);
+  border-radius: 3px;
+  white-space: nowrap;
+  transition: color 0.15s ease;
+}
+
+.moi-skills__tag:hover {
+  color: var(--p-text);
+}
+
+/* ---- Qualities ---- */
+
+.moi-qualities {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem 2rem;
+}
+
+.moi-quality__title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--p-text);
+  margin: 0 0 0.25rem;
+}
+
+.moi-quality__desc {
+  font-size: 0.8rem;
+  line-height: 1.55;
+  color: var(--p-text-muted);
+  margin: 0;
+  text-wrap: pretty;
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
+@media (max-width: 640px) {
+  .moi-hero {
+    grid-template-columns: 1fr;
+    padding: 2.5rem 0 2rem;
+  }
+
+  .moi-hero__photo,
+  .moi-hero__photo-fallback {
+    width: 64px;
+    height: 64px;
+    order: -1;
+  }
+
+  .moi-timeline {
+    margin-left: 0;
+  }
+
+  .moi-timeline-item__period {
+    position: static;
+    width: auto;
+    text-align: left;
+    margin-bottom: 0.25rem;
+  }
+
+  .moi-skills {
+    grid-template-columns: 1fr;
+  }
+
+  .moi-skills__cell:nth-child(odd) {
+    border-right: none;
+  }
+
+  .moi-skills__cell:nth-child(1) {
+    border-bottom: 1px solid var(--p-border);
+  }
+
+  .moi-skills__cell:nth-child(2) {
+    border-bottom: 1px solid var(--p-border);
+  }
+
+  .moi-skills__cell:nth-child(3) {
+    border-bottom: 1px solid var(--p-border);
+  }
+
+  .moi-qualities {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+}
+
+@media (max-width: 920px) and (min-width: 641px) {
+  .moi-qualities {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* ---- Reduced motion ---- */
+
+@media (prefers-reduced-motion: reduce) {
+  .moi-hero__photo {
+    transition: none;
+  }
+}
